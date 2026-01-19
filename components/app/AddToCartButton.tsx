@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -23,10 +24,17 @@ export function AddToCartButton({
   stock,
   className,
 }: AddToCartButtonProps) {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { addItem, updateQuantity } = useCartActions();
   const cartItem = useCartItem(productId);
 
-  const quantityInCart = cartItem?.quantity ?? 0;
+  // Use null during SSR to prevent hydration mismatch
+  const quantityInCart = mounted ? (cartItem?.quantity ?? 0) : 0;
   const isOutOfStock = stock <= 0;
   const isAtMax = quantityInCart >= stock;
 

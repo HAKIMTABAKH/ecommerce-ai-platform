@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useCartItem } from "@/lib/store/cart-store-provider";
 import { cn } from "@/lib/utils";
@@ -12,9 +13,17 @@ interface StockBadgeProps {
 }
 
 export function StockBadge({ productId, stock, className }: StockBadgeProps) {
+  const [mounted, setMounted] = useState(false);
+  
+  // Prevent SSR issues by only accessing cart store after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const cartItem = useCartItem(productId);
 
-  const quantityInCart = cartItem?.quantity ?? 0;
+  // Use 0 during SSR to prevent hydration mismatch
+  const quantityInCart = mounted ? (cartItem?.quantity ?? 0) : 0;
   const isAtMax = quantityInCart >= stock && stock > 0;
   const lowStock = checkLowStock(stock);
 
