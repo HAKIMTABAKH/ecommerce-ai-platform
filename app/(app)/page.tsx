@@ -20,12 +20,11 @@ interface PageProps {
     color?: string;
     material?: string;
     minPrice?: string;
-    maxPrice?: string;
+    maxPrice?: string; 
     sort?: string;
     inStock?: string;
   }>;
 }
-
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams;
 
