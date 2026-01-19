@@ -35,9 +35,9 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* My Orders - Only when signed in */}
+          {/* My Orders - Only when signed in and hidden on mobile */}
           <SignedIn>
-            <Button asChild>
+            <Button asChild className="hidden md:flex">
               <Link href="/orders" className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
                 <span className="text-sm font-medium">My Orders</span>
